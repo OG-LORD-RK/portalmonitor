@@ -1,0 +1,28 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Build with Clang
+        shell: cmd
+        run: |
+          clang-cl /O2 /W4 CampusPortalMonitor_win.c ^
+            /link winhttp.lib crypt32.lib iphlpapi.lib ws2_32.lib ^
+            /out:CampusPortalMonitor.exe
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: CampusPortalMonitor-Windows
+          path: CampusPortalMonitor.exe
