@@ -23,6 +23,23 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+/*
+ * Target Windows Vista+ APIs. This is required for the modern
+ * IP_ADAPTER_ADDRESSES typedef exposed by the Windows SDK.
+ */
+#ifndef _WIN32_WINNT
+#define _WIN32_WINNT 0x0600
+#endif
+#ifndef WINVER
+#define WINVER 0x0600
+#endif
+
+/*
+ * Winsock2 must be included before iphlpapi/iptypes headers.
+ */
+#include <winsock2.h>
+#include <ws2tcpip.h>
+
 #include <windows.h>
 #include <winhttp.h>
 #include <wincrypt.h>
