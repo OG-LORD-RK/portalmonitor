@@ -27,6 +27,7 @@
 #include <winhttp.h>
 #include <wincrypt.h>
 #include <iphlpapi.h>
+#include <iptypes.h>
 #include <netioapi.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -241,7 +242,6 @@ static BOOL load_credentials(Credentials *cred)
     DWORD size = 0;
     DWORD read = 0;
     BYTE *encrypted = NULL;
-    BYTE *plain = NULL;
     DATA_BLOB input = {0};
     DATA_BLOB output = {0};
     BOOL ok = FALSE;
@@ -440,7 +440,7 @@ static BOOL http_request(
     if (!WinHttpReceiveResponse(request, NULL))
         goto cleanup;
 
-    if (!WinHttpQueryHeadersW(
+    if (!WinHttpQueryHeaders(
             request,
             WINHTTP_QUERY_STATUS_CODE,
             WINHTTP_HEADER_NAME_BY_INDEX,
@@ -457,7 +457,7 @@ static BOOL http_request(
         wchar_t location[2048];
         DWORD loc_size = sizeof(location);
 
-        if (WinHttpQueryHeadersW(
+        if (WinHttpQueryHeaders(
                 request,
                 WINHTTP_QUERY_LOCATION,
                 WINHTTP_HEADER_NAME_BY_INDEX,
